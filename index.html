@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Green Thumb | Naturally Grown</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .active-tab { border-bottom: 4px solid #065f46; color: #065f46; }
+    </style>
+</head>
+<body class="bg-stone-50 text-gray-800 font-sans">
+
+    <header class="w-full bg-white pt-2 shadow-sm">
+        <div class="container mx-auto px-4 flex justify-center">
+            <img src="business-banner.jpeg" 
+                 alt="The Green Thumb Banner" 
+                 class="w-auto h-auto max-h-[120px] block"
+                 onerror="this.src='https://via.placeholder.com/800x120?text=The+Green+Thumb+Banner'">
+        </div>
+    </header>
+
+    <div class="w-full bg-white pb-4 text-center flex flex-col items-center justify-center gap-2">
+        <p class="text-emerald-700 text-lg md:text-xl font-medium italic tracking-wide">
+            "Health and Tradition in Every Grain"
+        </p>
+        <div id="auth-status-bar" class="text-sm font-semibold text-emerald-900 bg-emerald-50 px-4 py-1 rounded-full mt-1">
+            Guest Session
+        </div>
+    </div>
+
+    <nav class="bg-emerald-800 text-white sticky top-0 z-40 shadow-md">
+        <div class="container mx-auto flex justify-between items-center px-6 py-4">
+            <div class="flex space-x-6 items-center">
+                <button onclick="showSection('shop')" class="text-sm font-bold uppercase tracking-wider hover:text-emerald-300 transition">Products</button>
+                <button onclick="scrollToFarm()" class="text-sm font-bold uppercase tracking-wider hover:text-emerald-300 transition">Farm</button>
+                <button id="nav-orders" onclick="showSection('orders')" class="text-sm font-bold uppercase tracking-wider hover:text-emerald-300 transition hidden text-amber-300">My Orders</button>
+                <button id="admin-link" onclick="showSection('admin')" class="text-sm font-bold uppercase tracking-wider text-yellow-400 hover:underline hidden">Admin Panel</button>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleCart()" class="relative bg-emerald-700 hover:bg-emerald-600 px-4 py-2 rounded-xl transition flex items-center gap-2 font-bold">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+                </button>
+                <button id="auth-btn" onclick="openAuthModal()" class="bg-white text-emerald-800 hover:bg-emerald-100 px-4 py-2 rounded-xl transition font-bold text-sm">
+                    Login / Register
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8 max-w-7xl">
+
+        <div id="section-shop" class="space-y-8">
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex gap-2 overflow-x-auto hide-scrollbar w-full md:w-auto pb-1" id="cat-filters"></div>
+                <div class="w-full md:w-72">
+                    <input type="text" id="search" oninput="renderShop()" placeholder="🔍 Search catalogue..." class="w-full border rounded-xl px-4 py-2 text-sm outline-none focus:ring-2 ring-emerald-500">
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-3xl font-bold text-emerald-900 mb-2 text-center">Our Retail Catalog</h2>
+                <div class="max-w-2xl mx-auto bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center text-emerald-800 font-medium text-sm mb-8">
+                    <i class="fas fa-info-circle mr-1"></i> <strong>Tip:</strong> For special commercial bulk orders and custom wholesale pricing configurations, please contact us directly using the number provided at the bottom of the page.
+                </div>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+
+            <section id="farm" class="py-12 bg-emerald-50 rounded-3xl overflow-hidden px-6 my-12">
+                <h3 class="text-3xl font-bold text-center text-emerald-900 mb-6">Farm Gallery</h3>
+                <div class="flex overflow-x-auto gap-4 hide-scrollbar snap-x snap-mandatory pb-4">
+                    <script>
+                        for(let i=1; i<=14; i++) {
+                            document.write(`
+                                <div class="flex-none w-72 sm:w-80 snap-start">
+                                    <img src="Image ${i}.jpeg" alt="Farm Photo ${i}" class="rounded-xl shadow-md h-64 w-full object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+${i}'">
+                                </div>
+                            `);
+                        }
+                    </script>
+                </div>
+                <p class="text-emerald-600 text-sm mt-4 italic">← Swipe to see more of our farm →</p>
+            </section>
+
+            <section id="contact" class="py-8 text-center">
+                <div class="max-w-md mx-auto bg-white p-10 rounded-3xl shadow-2xl border-t-[10px] border-emerald-800">
+                    <h3 class="text-3xl font-bold text-emerald-900 mb-4">Contact Us</h3>
+                    <div class="mb-8">
+                        <p class="text-3xl font-extrabold text-gray-800">Kalyani M. Gurav</p>
+                    </div>
+                    <a href="tel:+919702714447" class="inline-flex items-center gap-4 bg-emerald-700 text-white px-10 py-5 rounded-2xl hover:bg-emerald-800 transition-all font-bold shadow-xl">
+                        <i class="fas fa-phone-alt text-xl"></i>
+                        <span class="text-xl">+91 97027 14447</span>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <div id="section-orders" class="max-w-2xl mx-auto space-y-6 hidden">
+            <h2 class="text-3xl font-black text-emerald-900">Your Purchase History</h2>
+            <div id="customer-order-list" class="space-y-4"></div>
+        </div>
+
+        <div id="section-admin" class="space-y-8 hidden">
+            <div class="flex border-b border-gray-200">
+                <button onclick="switchAdminTab('manage')" id="tab-manage" class="px-6 py-3 font-bold text-sm uppercase tracking-wider active-tab">Live Inventory Manager</button>
+                <button onclick="switchAdminTab('reports')" id="tab-reports" class="px-6 py-3 font-bold text-sm uppercase tracking-wider text-gray-400">Sales Reports & Master Orders</button>
+            </div>
+
+            <div id="admin-manage" class="space-y-6">
+                <div class="bg-white p-6 rounded-2xl border shadow-sm">
+                    <h3 class="text-lg font-bold text-emerald-900 mb-4">Create & Deploy New Product Listing</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                        <input type="text" id="new-p-name" placeholder="Product Name" class="border p-3 rounded-xl text-sm outline-none">
+                        <input type="number" id="new-p-price" placeholder="Base Price (₹)" class="border p-3 rounded-xl text-sm outline-none">
+                        <select id="new-p-cat" class="border p-3 rounded-xl text-sm bg-white outline-none">
+                            <option value="grain">Grains & Pulses</option>
+                            <option value="flour">Flours</option>
+                            <option value="processed">Ready To Eat</option>
+                            <option value="farm">Farm Supplies</option>
+                        </select>
+                        <select id="new-p-matrix" class="border p-3 rounded-xl text-sm bg-white outline-none">
+                            <option value="weight">Mass (Kg / g)</option>
+                            <option value="liquid">Liquid Volume (L / ml)</option>
+                            <option value="packet">Packet (pkt)</option>
+                            <option value="bottle">Bottle (btl)</option>
+                        </select>
+                        <button onclick="addProduct()" class="bg-emerald-800 text-white p-3 rounded-xl text-sm font-bold uppercase tracking-wider hover:bg-emerald-900">Deploy</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border shadow-sm overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-stone-100 text-stone-700 uppercase font-bold text-xs">
+                            <tr>
+                                <th class="p-4">Product Name</th>
+                                <th class="p-4">Category</th>
+                                <th class="p-4">Measurement System</th>
+                                <th class="p-4">Base Pricing</th>
+                                <th class="p-4 text-center">Action Options</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-inventory-table" class="divide-y"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="admin-reports" class="space-y-6 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border shadow-sm">
+                        <p class="text-stone-400 text-xs font-bold uppercase tracking-wider mb-1">Gross Sales Revenue</p>
+                        <h2 id="rep-revenue" class="text-4xl font-black text-emerald-700">₹0.00</h2>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border shadow-sm">
+                        <p class="text-stone-400 text-xs font-bold uppercase tracking-wider mb-1">Total Orders Processed</p>
+                        <h2 id="rep-orders" class="text-4xl font-black text-blue-800">0</h2>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border shadow-sm">
+                        <p class="text-stone-400 text-xs font-bold uppercase tracking-wider mb-1">Top Performing Category</p>
+                        <h2 id="rep-cat" class="text-4xl font-black text-purple-800">-</h2>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border shadow-sm overflow-hidden">
+                    <div class="p-4 bg-stone-50 border-b flex justify-between items-center">
+                        <h3 class="font-bold text-stone-700">Master Business Order Registries</h3>
+                        <select id="report-filter" onchange="renderAdminOrders()" class="border text-xs p-2 rounded-xl bg-white outline-none">
+                            <option value="all">Display All Transactions</option>
+                            <option value="ongoing">Ongoing Logs Only</option>
+                            <option value="fulfilled">Fulfilled Logs Only</option>
+                        </select>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs text-left">
+                            <thead class="bg-stone-100 font-bold text-stone-700 uppercase">
+                                <tr>
+                                    <th class="p-4">Order Ref ID</th>
+                                    <th class="p-4">Customer Credentials</th>
+                                    <th class="p-4">Items Manifest</th>
+                                    <th class="p-4">Total Price Bill</th>
+                                    <th class="p-4">Status Dispatch Control</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-orders-log" class="divide-y"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="py-8 text-center text-gray-400 text-xs mt-12 border-t">
+        <p>&copy; 2026 The Green Thumb Enterprises</p>
+    </footer>
+
+    <div id="modal-cart" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end">
+        <div class="bg-white w-full max-w-md h-full p-6 flex flex-col shadow-2xl">
+            <div class="flex justify-between items-center pb-4 border-b mb-4">
+                <h2 class="text-xl font-bold text-emerald-900 uppercase">Your Basket</h2>
+                <button onclick="toggleCart()" class="text-2xl text-stone-400 hover:text-stone-700">&times;</button>
+            </div>
+            <div id="cart-list" class="flex-grow overflow-y-auto space-y-4 pr-1"></div>
+            <div class="border-t pt-4 mt-4 space-y-4">
+                <div class="flex justify-between text-2xl font-black text-stone-900">
+                    <span>Total Bill:</span>
+                    <span id="cart-total">₹0.00</span>
+                </div>
+                <button onclick="openCheckout()" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white py-4 rounded-xl font-bold tracking-wide">
+                    PROCEED TO CHECKOUT
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-auth" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm p-6 rounded-3xl shadow-2xl">
+            <div class="flex border-b mb-6 text-center text-sm font-bold uppercase tracking-wider">
+                <button onclick="switchAuth('login')" id="auth-tab-l" class="w-1/2 py-2 border-b-2 border-emerald-800 text-emerald-800 font-bold">Login</button>
+                <button onclick="switchAuth('reg')" id="auth-tab-r" class="w-1/2 py-2 text-gray-400 font-bold">Register</button>
+            </div>
+            <form id="auth-form" onsubmit="handleAuth(event)" class="space-y-4">
+                <input type="text" id="auth-user" placeholder="Username" required class="w-full border p-3 rounded-xl text-sm outline-none focus:ring-2 ring-emerald-700">
+                
+                <div id="phone-field-wrapper">
+                    <input type="tel" id="auth-phone" placeholder="10-Digit Mobile Phone Number" class="w-full border p-3 rounded-xl text-sm outline-none focus:ring-2 ring-emerald-700">
+                </div>
+                
+                <input type="password" id="auth-pass" placeholder="Secure System Access Pin" required class="w-full border p-3 rounded-xl text-sm outline-none focus:ring-2 ring-emerald-700">
+                <button id="auth-submit-btn" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white py-3 rounded-xl font-bold uppercase tracking-wider text-sm transition">Log In</button>
+            </form>
+            <button onclick="closeAuth()" class="w-full mt-4 text-center text-xs text-gray-400 font-bold uppercase tracking-wide hover:text-stone-600">Exit Window</button>
+        </div>
+    </div>
+
+    <div id="modal-checkout" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md p-6 rounded-3xl shadow-2xl">
+            <h2 class="text-xl font-bold text-emerald-900 mb-2">Specify Shipping Hub Address</h2>
+            <p class="text-xs text-stone-400 mb-4 italic">You can easily update your saved address here before making final submission adjustments.</p>
+            <textarea id="checkout-address" rows="4" class="w-full border p-3 rounded-xl mb-4 text-sm outline-none focus:ring-2 ring-emerald-600" placeholder="Specify full home street numbers..."></textarea>
+            <button onclick="confirmOrder()" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white py-3.5 rounded-xl font-bold uppercase tracking-wide text-sm">SUBMIT DISPATCH MANIFEST ORDER</button>
+            <button onclick="closeCheckout()" class="w-full mt-3 text-stone-400 text-sm font-semibold">Return To Cart Grid</button>
+        </div>
+    </div>
+
+    <script>
+        let defaultInventoryBlueprint = [
+            { id: 1, name: "Rice (तांदूळ)", price: 60, cat: "grain", matrix: "weight" },
+            { id: 2, name: "Finger Millet (नाचणी)", price: 70, cat: "grain", matrix: "weight" },
+            { id: 3, name: "Moth Beans (मटकी)", price: 120, cat: "grain", matrix: "weight" },
+            { id: 4, name: "Cowpea (चवळी)", price: 100, cat: "grain", matrix: "weight" },
+            { id: 9, name: "Flattened Rice / Poha (पोहे)", price: 65, cat: "processed", matrix: "weight" },
+            { id: 10, name: "Rice Flour (भाकरीपीठ)", price: 70, cat: "flour", matrix: "weight" },
+            { id: 15, name: "Turmeric Powder (हळदपावडर)", price: 240, cat: "processed", matrix: "weight" },
+            { id: 16, name: "Karvanda Pickle", price: 150, cat: "processed", matrix: "bottle" },
+            { id: 17, name: "Jackfruit Chips", price: 90, cat: "processed", matrix: "packet" },
+            { id: 18, name: "Cashew Syrup", price: 180, cat: "processed", matrix: "liquid" },
+            { id: 19, name: "Raw Mango Drink", price: 120, cat: "processed", matrix: "liquid" },
+            { id: 20, name: "Jivamrut (जीवामृत)", price: 50, cat: "farm", matrix: "liquid" }
+        ];
+
+        let products = JSON.parse(localStorage.getItem('gt_products')) || defaultInventoryBlueprint;
+        let orders = JSON.parse(localStorage.getItem('gt_orders')) || [];
+        let users = JSON.parse(localStorage.getItem('gt_users')) || {};
+        
+        let cart = [];
+        let currentUser = null;
+        let activeCat = 'all';
+        let authMode = 'login';
+        let editingProductId = null; 
+
+        window.onload = () => {
+            if(!localStorage.getItem('gt_products')) saveProducts();
+            renderShop();
+            updateCartUI();
+        };
+
+        function saveProducts() { localStorage.setItem('gt_products', JSON.stringify(products)); }
+        function saveOrders() { localStorage.setItem('gt_orders', JSON.stringify(orders)); }
+
+        function showSection(id) {
+            ['shop', 'orders', 'admin'].forEach(s => document.getElementById(`section-${s}`).classList.add('hidden'));
+            document.getElementById(`section-${id}`).classList.remove('hidden');
+            if(id === 'orders') renderCustomerOrders();
+            if(id === 'admin') {
+                editingProductId = null;
+                renderAdminInventory();
+                renderAdminOrders();
+            }
+        }
+
+        function scrollToFarm() {
+            showSection('shop');
+            setTimeout(() => {
+                document.getElementById('farm').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        function renderShop() {
+            const grid = document.getElementById('product-grid');
+            const query = document.getElementById('search').value.toLowerCase();
+            grid.innerHTML = "";
+            
+            let filteredList = products.filter(p => (activeCat === 'all' || p.cat === activeCat) && p.name.toLowerCase().includes(query));
+            
+            if(filteredList.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-12 text-center text-stone-400 italic text-sm">No items found matching filter constraints.</div>`;
+                renderCategoryFilters();
+                return;
+            }
+
+            filteredList.forEach(p => {
+                let matrixHtml = '';
+                const pMatrix = p.matrix || 'weight';
+
+                if (pMatrix === 'weight') {
+                    matrixHtml = `
+                        <input type="number" id="qty-value-${p.id}" value="250" min="1" oninput="recalculateCardPrice(${p.id}, ${p.price})" class="border text-xs rounded-lg p-1.5 bg-stone-50 outline-none w-16 font-bold text-center">
+                        <select id="qty-unit-${p.id}" onchange="handleUnitToggle(${p.id}, ${p.price}, 'weight')" class="border text-xs rounded-lg p-1.5 bg-stone-50 outline-none flex-grow font-medium">
+                            <option value="g">grams</option>
+                            <option value="kg">kg</option>
+                        </select>
+                    `;
+                } else if (pMatrix === 'liquid') {
+                    matrixHtml = `
+                        <input type="number" id="qty-value-${p.id}" value="250" min="1" oninput="recalculateCardPrice(${p.id}, ${p.price})" class="border text-xs rounded-lg p-1.5 bg-stone-50 outline-none w-16 font-bold text-center">
+                        <select id="qty-unit-${p.id}" onchange="handleUnitToggle(${p.id}, ${p.price}, 'liquid')" class="border text-xs rounded-lg p-1.5 bg-stone-50 outline-none flex-grow font-medium">
+                            <option value="ml">ml</option>
+                            <option value="L">Liter (L)</option>
+                        </select>
+                    `;
+                } else if (pMatrix === 'packet') {
+                    matrixHtml = `
+                        <input type="number" id="qty-value-${p.id}" value="1" min="1" oninput="recalculateCardPrice(${p.id}, ${p.price})" class="border text-xs rounded-lg p-1.5 bg-stone-50 outline-none w-16 font-bold text-center">
+                        <span class="text-xs font-bold text-stone-500 bg-stone-100 px-3 py-1.5 rounded-lg flex-grow text-center border">packet</span>
+                        <input type="hidden" id="qty-unit-${p.id}" value="packet">
+                    `;
+                } else if (pMatrix === 'bottle') {
+                    matrixHtml = `
+                        <input type="number" id="qty-value-${p.id}" value="1" min="1" oninput="recalculateCardPrice(${p.id}, ${p.price})" class="border text-xs rounded-lg p-1.5 bg-stone-50 outline-none w-16 font-bold text-center">
+                        <span class="text-xs font-bold text-stone-500 bg-stone-100 px-3 py-1.5 rounded-lg flex-grow text-center border">bottle</span>
+                        <input type="hidden" id="qty-unit-${p.id}" value="bottle">
+                    `;
+                }
+
+                grid.innerHTML += `
+                    <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+                        <div>
+                            <span class="text-[10px] uppercase font-black tracking-widest text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">${p.cat}</span>
+                            <h3 class="font-bold text-sm text-stone-800 leading-tight mt-2 h-10 overflow-hidden">${p.name}</h3>
+                            
+                            <div class="mt-3 flex gap-1 items-center">
+                                ${matrixHtml}
+                            </div>
+                            <p id="display-price-${p.id}" class="text-xl font-black text-stone-900 mt-2">₹${p.price}</p>
+                        </div>
+                        <button onclick="addToCart(${p.id})" class="w-full mt-3 bg-emerald-800 text-white hover:bg-emerald-900 py-2 rounded-xl text-xs font-bold transition">ADD TO BASKET</button>
+                    </div>
+                `;
+                
+                setTimeout(() => { recalculateCardPrice(p.id, p.price); }, 0);
+            });
+            renderCategoryFilters();
+        }
+
+        function handleUnitToggle(productId, basePrice, systemGroup) {
+            const currentUnit = document.getElementById(`qty-unit-${productId}`).value;
+            const qtyField = document.getElementById(`qty-value-${productId}`);
+            
+            if (systemGroup === 'weight') {
+                if (currentUnit === 'kg') qtyField.value = "1";
+                if (currentUnit === 'g') qtyField.value = "250";
+            } else if (systemGroup === 'liquid') {
+                if (currentUnit === 'L') qtyField.value = "1";
+                if (currentUnit === 'ml') qtyField.value = "250";
+            }
+            
+            recalculateCardPrice(productId, basePrice);
+        }
+
+        function recalculateCardPrice(productId, basePrice) {
+            const qtyInput = parseFloat(document.getElementById(`qty-value-${productId}`).value) || 0;
+            const unitType = document.getElementById(`qty-unit-${productId}`).value;
+            
+            let finalCalculatedPrice = basePrice * qtyInput;
+            
+            if (unitType === "g" || unitType === "ml") {
+                finalCalculatedPrice = (basePrice / 1000) * qtyInput;
+            }
+            
+            document.getElementById(`display-price-${productId}`).innerText = `₹${Math.ceil(finalCalculatedPrice)}`;
+        }
+
+        function renderCategoryFilters() {
+            const staticCategories = ['all', 'grain', 'flour', 'processed', 'farm'];
+            const labelsMap = { 'all': 'All Listings', 'grain': 'Grains & Pulses', 'flour': 'Flours', 'processed': 'Ready to Eat', 'farm': 'Farm Supplies' };
+            const container = document.getElementById('cat-filters');
+            
+            container.innerHTML = staticCategories.map(c => `
+                <button onclick="filterCat('${c}')" class="${activeCat === c ? 'bg-emerald-800 text-white' : 'bg-stone-100 text-stone-700'} px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap capitalize border transition">${labelsMap[c] || c}</button>
+            `).join('');
+        }
+
+        function filterCat(c) { activeCat = c; renderShop(); }
+
+        function addToCart(id) {
+            const p = products.find(x => x.id === id);
+            const qtyInput = parseFloat(document.getElementById(`qty-value-${id}`).value) || 1;
+            const unitType = document.getElementById(`qty-unit-${id}`).value;
+            
+            let finalCalculatedPrice = p.price * qtyInput;
+            if (unitType === "g" || unitType === "ml") {
+                finalCalculatedPrice = (p.price / 1000) * qtyInput;
+            }
+            
+            const cartItemObject = {
+                id: p.id,
+                name: `${p.name} (${qtyInput} ${unitType})`,
+                price: Math.ceil(finalCalculatedPrice),
+                cat: p.cat
+            };
+            
+            cart.push(cartItemObject);
+            updateCartUI();
+            
+            let triggerBtn = event.target;
+            triggerBtn.innerText = "ADDED IN BASKET!";
+            triggerBtn.className = "w-full mt-3 bg-amber-600 text-white py-2 rounded-xl text-xs font-bold";
+            setTimeout(() => {
+                triggerBtn.innerText = "ADD TO BASKET";
+                triggerBtn.className = "w-full mt-3 bg-emerald-800 text-white py-2 rounded-xl text-xs font-bold";
+            }, 600);
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const list = document.getElementById('cart-list');
+            let grandCostBillTotal = 0;
+            
+            list.innerHTML = cart.map((item, idx) => {
+                grandCostBillTotal += item.price;
+                return `
+                    <div class="flex justify-between items-center border-b pb-3 text-sm bg-stone-50 p-2 rounded-xl">
+                        <div class="max-w-[70%]">
+                            <p class="font-bold text-stone-800 text-xs">${item.name}</p>
+                            <span class="text-[10px] text-emerald-800 uppercase font-bold">${item.cat}</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <b class="text-stone-900 text-sm">₹${item.price}</b>
+                            <button onclick="removeFromCart(${idx})" class="text-red-500 hover:text-red-700 text-xs"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            if(cart.length === 0) {
+                list.innerHTML = `<div class="text-center py-12 text-stone-400 text-xs italic">Your basket container is currently empty.</div>`;
+            }
+            document.getElementById('cart-total').innerText = `₹${grandCostBillTotal.toFixed(2)}`;
+        }
+
+        function removeFromCart(idx) { cart.splice(idx, 1); updateCartUI(); }
+        function toggleCart() { document.getElementById('modal-cart').classList.toggle('hidden'); }
+
+        function openAuthModal() { 
+            document.getElementById('modal-auth').classList.remove('hidden'); 
+            switchAuth('login'); 
+        }
+        function closeAuth() { document.getElementById('modal-auth').classList.add('hidden'); }
+        
+        function switchAuth(m) {
+            authMode = m;
+            const phoneWrapper = document.getElementById('phone-field-wrapper');
+            const phoneInput = document.getElementById('auth-phone');
+            const submitBtn = document.getElementById('auth-submit-btn');
+
+            if (m === 'login') {
+                document.getElementById('auth-tab-l').className = "w-1/2 py-2 border-b-2 border-emerald-800 text-emerald-800 font-bold";
+                document.getElementById('auth-tab-r').className = "w-1/2 py-2 text-gray-400 font-bold";
+                phoneWrapper.classList.add('hidden');
+                phoneInput.removeAttribute('required');
+                submitBtn.innerText = "Log In";
+            } else {
+                document.getElementById('auth-tab-l').className = "w-1/2 py-2 text-gray-400 font-bold";
+                document.getElementById('auth-tab-r').className = "w-1/2 py-2 border-b-2 border-emerald-800 text-emerald-800 font-bold";
+                phoneWrapper.classList.remove('hidden');
+                phoneInput.setAttribute('required', 'required');
+                submitBtn.innerText = "Register Account";
+            }
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const name = document.getElementById('auth-user').value.trim();
+            const phone = document.getElementById('auth-phone').value.trim();
+            const pass = document.getElementById('auth-pass').value;
+
+            if(authMode === 'reg') {
+                if(phone.length !== 10) return alert("Please specify a valid 10-digit phone number.");
+                
+                let lookupExisting = Object.values(users).find(u => u.name.toLowerCase() === name.toLowerCase());
+                if(lookupExisting) return alert("This username is already occupied. Please pick another one.");
+
+                users[phone] = { name, phone, pass, address: "" };
+                localStorage.setItem('gt_users', JSON.stringify(users));
+                alert("Registration complete! Switching to login mode.");
+                switchAuth('login');
+            } else {
+                let userMatch = Object.values(users).find(u => u.name.toLowerCase() === name.toLowerCase());
+                
+                if(userMatch && userMatch.pass === pass) {
+                    currentUser = userMatch;
+                    document.getElementById('auth-status-bar').innerHTML = `User Connected: <span class="text-emerald-700 font-black">${currentUser.name}</span>`;
+                    document.getElementById('auth-btn').innerText = "SIGN OUT";
+                    document.getElementById('auth-btn').onclick = () => location.reload();
+                    document.getElementById('nav-orders').classList.remove('hidden');
+                    
+                    if(currentUser.phone === '9702714447' || currentUser.name.toLowerCase() === 'admin') {
+                        document.getElementById('admin-link').classList.remove('hidden');
+                        alert("Administrative Workspace Unlocked.");
+                    } else {
+                        alert(`Welcome, ${currentUser.name}!`);
+                    }
+                    closeAuth();
+                } else { 
+                    alert("Authentication Error: Invalid Username or Security PIN."); 
+                }
+            }
+        }
+
+        function openCheckout() {
+            if(!currentUser) { toggleCart(); openAuthModal(); return; }
+            if(cart.length === 0) return alert("Basket configuration contains no packages.");
+            document.getElementById('checkout-address').value = currentUser.address || "";
+            document.getElementById('modal-checkout').classList.remove('hidden');
+        }
+
+        function closeCheckout() { document.getElementById('modal-checkout').classList.add('hidden'); }
+
+function confirmOrder() {
+    const addr = document.getElementById('checkout-address').value.trim();
+    if(!addr) return alert("Shipping destination is mandatory.");
+    
+    currentUser.address = addr;
+    users[currentUser.phone].address = addr;
+    localStorage.setItem('gt_users', JSON.stringify(users));
+
+    const generatedOrderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
+    const cartTotalAmount = cart.reduce((sum, item) => sum + item.price, 0);
+    const itemsManifestText = cart.map(i => `${i.name}`).join(', ');
+
+    const newOrder = {
+        id: generatedOrderId,
+        customer: currentUser.name,
+        phone: currentUser.phone,
+        items: itemsManifestText,
+        total: cartTotalAmount,
+        status: 'ongoing',
+        category: cart[0].cat || "grain",
+        address: addr // Added to the payload for the email body
+    };
+
+    // Save order locally to your Admin Dashboard (as before)
+    orders.push(newOrder);
+    saveOrders();
+
+    // --- NEW: SILENT PYTHON BACKEND API CALL ---
+    fetch('https://thegreenthumb.onrender.com/api/orders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newOrder)
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Backend alert failure");
+        console.log("Python backend received order, email dispatch triggered.");
+    })
+    .catch(error => {
+        console.error("Could not reach Python backend server:", error);
+    });
+    
+    // UI Cleanup
+    alert(`ORDER CAPTURED SUCCESSFULLY!\nTracking ID: ${generatedOrderId}\n\nAn automated order report summary has been dispatched to the owner's operational email inbox.`);
+    cart = [];
+    updateCartUI();
+    closeCheckout();
+    toggleCart();
+    showSection('orders');
+}
+
+        function renderCustomerOrders() {
+            const list = document.getElementById('customer-order-list');
+            const myOrders = orders.filter(o => o.phone === currentUser.phone);
+            
+            list.innerHTML = myOrders.length ? myOrders.map(o => `
+                <div class="bg-white p-5 rounded-2xl border shadow-sm flex justify-between items-center text-xs">
+                    <div class="space-y-1">
+                        <p class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">${o.id}</p>
+                        <p class="font-bold text-stone-800 text-sm">${o.items}</p>
+                        <p class="text-base font-black text-emerald-800">Rate: ₹${o.total.toFixed(2)}</p>
+                    </div>
+                    <span class="text-[10px] font-black uppercase px-2.5 py-1 rounded-md tracking-wider ${o.status === 'fulfilled' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}">${o.status}</span>
+                </div>
+            `) : "<p class='text-center text-stone-400 italic text-sm py-12'>No previous history logs registered.</p>";
+        }
+
+        function renderAdminInventory() {
+            const tbody = document.getElementById('admin-inventory-table');
+            tbody.innerHTML = products.map(p => {
+                const currentMatrix = p.matrix || 'weight';
+                if (editingProductId === p.id) {
+                    return `
+                        <tr class="bg-emerald-50/50">
+                            <td class="p-4">
+                                <input type="text" id="edit-p-name-${p.id}" value="${p.name}" class="border px-3 py-1.5 rounded-xl text-sm outline-none w-full max-w-xs font-bold text-stone-800 focus:ring-2 ring-emerald-500">
+                            </td>
+                            <td class="p-4">
+                                <select id="edit-p-cat-${p.id}" class="border px-3 py-1.5 rounded-xl text-sm bg-white font-semibold outline-none text-stone-600">
+                                    <option value="grain" ${p.cat === 'grain' ? 'selected' : ''}>Grains & Pulses</option>
+                                    <option value="flour" ${p.cat === 'flour' ? 'selected' : ''}>Flours</option>
+                                    <option value="processed" ${p.cat === 'processed' ? 'selected' : ''}>Ready To Eat</option>
+                                    <option value="farm" ${p.cat === 'farm' ? 'selected' : ''}>Farm Supplies</option>
+                                </select>
+                            </td>
+                            <td class="p-4">
+                                <select id="edit-p-matrix-${p.id}" class="border px-3 py-1.5 rounded-xl text-sm bg-white font-semibold outline-none text-stone-600">
+                                    <option value="weight" ${currentMatrix === 'weight' ? 'selected' : ''}>Mass (Kg / g)</option>
+                                    <option value="liquid" ${currentMatrix === 'liquid' ? 'selected' : ''}>Liquid Volume (L / ml)</option>
+                                    <option value="packet" ${currentMatrix === 'packet' ? 'selected' : ''}>Packet (pkt)</option>
+                                    <option value="bottle" ${currentMatrix === 'bottle' ? 'selected' : ''}>Bottle (btl)</option>
+                                </select>
+                            </td>
+                            <td class="p-4">
+                                <input type="number" id="edit-p-price-${p.id}" value="${p.price}" class="border px-3 py-1.5 rounded-xl text-sm outline-none w-24 font-black focus:ring-2 ring-emerald-500">
+                            </td>
+                            <td class="p-4 text-center space-x-2">
+                                <button onclick="saveProductEdit(${p.id})" class="text-emerald-700 hover:text-emerald-950 font-bold text-xs"><i class="fas fa-check"></i> Save</button>
+                                <button onclick="cancelProductEdit()" class="text-stone-400 hover:text-stone-600 text-xs">Cancel</button>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    return `
+                        <tr class="hover:bg-stone-50">
+                            <td class="p-4 font-bold text-stone-800">${p.name}</td>
+                            <td class="p-4 uppercase text-xs font-bold tracking-wider text-stone-500">${p.cat}</td>
+                            <td class="p-4 capitalize text-xs font-bold text-stone-600">${currentMatrix}</td>
+                            <td class="p-4 font-extrabold text-stone-900">₹${p.price}</td>
+                            <td class="p-4 text-center space-x-4">
+                                <button onclick="enableProductEdit(${p.id})" class="text-amber-500 hover:text-amber-600 transition"><i class="fas fa-edit"></i> Edit</button>
+                                <button onclick="deleteProduct(${p.id})" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash-alt"></i> Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            }).join('');
+        }
+
+        function enableProductEdit(id) { editingProductId = id; renderAdminInventory(); }
+        function cancelProductEdit() { editingProductId = null; renderAdminInventory(); }
+
+        function saveProductEdit(id) {
+            const updatedName = document.getElementById(`edit-p-name-${id}`).value.trim();
+            const updatedPrice = parseInt(document.getElementById(`edit-p-price-${id}`).value);
+            const updatedCat = document.getElementById(`edit-p-cat-${id}`).value;
+            const updatedMatrix = document.getElementById(`edit-p-matrix-${id}`).value;
+
+            if(!updatedName || !updatedPrice || isNaN(updatedPrice)) {
+                return alert("Please enter a valid name and price configuration.");
+            }
+
+            const productIndex = products.findIndex(p => p.id === id);
+            if(productIndex !== -1) {
+                products[productIndex].name = updatedName;
+                products[productIndex].price = updatedPrice;
+                products[productIndex].cat = updatedCat;
+                products[productIndex].matrix = updatedMatrix;
+                
+                saveProducts();
+                editingProductId = null;
+                renderAdminInventory();
+                renderShop();
+                alert("Product metadata maps updated successfully!");
+            }
+        }
+
+        function addProduct() {
+            const name = document.getElementById('new-p-name').value.trim();
+            const price = parseInt(document.getElementById('new-p-price').value);
+            const cat = document.getElementById('new-p-cat').value;
+            const matrix = document.getElementById('new-p-matrix').value;
+            
+            if(!name || !price || isNaN(price)) return alert("Please fill out configuration strings correctly.");
+            
+            products.push({ id: Date.now(), name, price, cat, matrix });
+            saveProducts();
+            renderAdminInventory();
+            renderShop();
+            
+            document.getElementById('new-p-name').value = "";
+            document.getElementById('new-p-price').value = "";
+            alert("New targeted-matrix layout entry live!");
+        }
+
+        function deleteProduct(id) {
+            if(!confirm("Remove from active catalogues?")) return;
+            products = products.filter(p => p.id !== id);
+            saveProducts();
+            if (editingProductId === id) editingProductId = null;
+            renderAdminInventory();
+            renderShop();
+        }
+
+        function switchAdminTab(t) {
+            document.getElementById('admin-manage').classList.toggle('hidden', t === 'reports');
+            document.getElementById('admin-reports').classList.toggle('hidden', t === 'manage');
+            document.getElementById('tab-manage').className = (t === 'manage') ? "px-6 py-3 font-bold text-sm uppercase tracking-wider active-tab" : "px-6 py-3 font-bold text-sm uppercase tracking-wider text-gray-400";
+            document.getElementById('tab-reports').className = (t === 'reports') ? "px-6 py-3 font-bold text-sm uppercase tracking-wider active-tab" : "px-6 py-3 font-bold text-sm uppercase tracking-wider text-gray-400";
+            if(t === 'reports') calculateReports();
+        }
+
+        function calculateReports() {
+            const revenueVolume = orders.reduce((sum, item) => sum + (item.status === 'fulfilled' ? item.total : 0), 0);
+            document.getElementById('rep-revenue').innerText = `₹${revenueVolume.toFixed(2)}`;
+            document.getElementById('rep-orders').innerText = orders.length;
+            
+            const categoryMetricsMap = {};
+            orders.forEach(o => categoryMetricsMap[o.category] = (categoryMetricsMap[o.category] || 0) + 1);
+            const highRanker = Object.keys(categoryMetricsMap).reduce((a, b) => categoryMetricsMap[a] > categoryMetricsMap[b] ? a : b, 'None');
+            document.getElementById('rep-cat').innerText = highRanker;
+        }
+
+        function renderAdminOrders() {
+            const filterConstraint = document.getElementById('report-filter').value;
+            const logTableBody = document.getElementById('admin-orders-log');
+            
+            logTableBody.innerHTML = orders.filter(o => filterConstraint === 'all' || o.status === filterConstraint).map((o, idx) => `
+                <tr class="hover:bg-stone-50">
+                    <td class="p-4 font-bold text-emerald-900">${o.id}</td>
+                    <td class="p-4 leading-normal"><strong>${o.customer}</strong><br><span class="text-stone-400">${o.phone}</span></td>
+                    <td class="p-4 text-stone-600 font-medium">${o.items}</td>
+                    <td class="p-4 font-black text-stone-900">₹${o.total.toFixed(2)}</td>
+                    <td class="p-4">
+                        <select onchange="updateOrderStatusSimulated(${idx}, this.value)" class="border rounded-xl p-1.5 text-xs bg-white font-bold outline-none">
+                            <option value="ongoing" ${o.status === 'ongoing' ? 'selected' : ''}>Ongoing Process</option>
+                            <option value="fulfilled" ${o.status === 'fulfilled' ? 'selected' : ''}>Fulfilled Done</option>
+                        </select>
+                    </td>
+                </tr>
+            `).join('');
+            
+            if(orders.length === 0) {
+                logTableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-stone-400 italic">No logs captured.</td></tr>`;
+            }
+        }
+
+        function updateOrderStatusSimulated(idx, textValueSignature) {
+            orders[idx].status = textValueSignature;
+            saveOrders();
+            calculateReports();
+        }
+    </script>
+</body>
+</html>
